@@ -88,7 +88,7 @@ const products = [
 /* =========================
    Google Apps Script URL
    ========================= */
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwJ8JThUfKcKGxuRtmDaGEqSvsKvgYxT4RpRiYYFv5egFnaDAoTAtSfVVo5yXe06SxS/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzkrsLy56yREGNjzcuQd9HokevtdOS49-JfwXjZJTiHLAn6L1BK4pObsyhPslCVOIzl/exec";
 
 /* =========================
    Cart Data
