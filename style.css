@@ -581,13 +581,36 @@ textarea {
   justify-content: center;
   padding: 20px;
   z-index: 250;
+
+  /* ✅ modal overlay ကိုယ်တိုင် scroll ခွင့်ပေး */
+  overflow-y: auto;
+
+  /* ✅ mobile safari / touch scroll smooth */
+  -webkit-overflow-scrolling: touch;
 }
 
 .modal-overlay.show {
   display: flex;
 }
-
 .modal-box,
+.modal-box {
+  width: 100%;
+  max-width: 520px;
+  background: #141414;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+
+  /* ✅ screen အမြင့်ထက်မကျော်အောင် */
+  max-height: 90vh;
+
+  /* ✅ box ထဲမှာပဲ scroll ဖြစ်စေ */
+  overflow-y: auto;
+
+  /* ✅ mobile touch scroll smooth */
+  -webkit-overflow-scrolling: touch;
+}
 .success-box {
   width: 100%;
   max-width: 520px;
@@ -690,5 +713,17 @@ textarea {
   .cart-drawer {
     width: 100%;
     right: -100%;
+  }
+}
+@media (max-width: 768px) {
+  .modal-overlay {
+    padding: 12px;
+    align-items: flex-start; /* ✅ mobile မှာ top ကနေစ */
+  }
+
+  .modal-box {
+    max-height: 88vh;
+    padding: 18px;
+    margin-top: 10px;
   }
 }
