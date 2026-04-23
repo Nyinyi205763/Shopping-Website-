@@ -89,7 +89,7 @@ const products = [
    Google Apps Script URL
    - Deploy ပြီးရလာတဲ့ Web App URL ကို ဒီမှာထည့်
    ========================= */
-const WEB_APP_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwJ8JThUfKcKGxuRtmDaGEqSvsKvgYxT4RpRiYYFv5egFnaDAoTAtSfVVo5yXe06SxS/exec";
 
 /* =========================
    Cart Data
