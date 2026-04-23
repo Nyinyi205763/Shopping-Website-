@@ -1,12 +1,6 @@
 function doPost(e) {
   try {
-
-    // ✅ (1) Google Sheet ID ထည့်
-    var sheet = SpreadsheetApp
-      .openById("10htxS1seXS8eYNM5MK3rpWgLYBwT4JEdb9EjHZgu6gw")
-      .getSheetByName("Orders");
-
-    // Frontend က data ကိုဖတ်
+    var sheet = SpreadsheetApp.openById("10htxS1seXS8eYNM5MK3rpWgLYBwT4JEdb9EjHZgu6gw").getSheetByName("Orders");
     var data = JSON.parse(e.postData.contents);
 
     var timestamp = new Date();
@@ -17,7 +11,6 @@ function doPost(e) {
     var orderedItems = data.orderedItems || "";
     var totalPrice = data.totalPrice || "";
 
-    // Sheet ထဲ save
     sheet.appendRow([
       timestamp,
       name,
@@ -29,38 +22,54 @@ function doPost(e) {
       "Pending"
     ]);
 
-    // ✅ (2) Telegram Bot Token ထည့်
-    var telegramToken = "8706026501:AAEgHPgzEpxTcan50SfPUJNkfLrDNpWcvGk";
+    var telegramStatus = "skipped";
 
-    // ✅ (3) Chat ID ထည့်
-    var chatId = "5014166684";
+    try {
+      var telegramToken = "YOUR_NEW_TELEGRAM_TOKEN";
+      var chatId = "5014166684";
 
-    var message =
-      "🛒 New Order\n\n" +
-      "👤 Name: " + name + "\n" +
-      "📞 Phone: " + phone + "\n" +
-      "📍 Location: " + location + "\n\n" +
-      "📦 Items:\n" + orderedItems + "\n\n" +
-      "💰 Total: $" + totalPrice;
+      var message =
+        "🛒 New Order Received\n\n" +
+        "👤 Name: " + name + "\n" +
+        "📧 Email: " + email + "\n" +
+        "📞 Phone: " + phone + "\n" +
+        "📍 Location: " + location + "\n\n" +
+        "📦 Ordered Items:\n" + orderedItems + "\n\n" +
+        "💰 Total: $" + totalPrice;
 
-    var url = "https://api.telegram.org/bot" + telegramToken + "/sendMessage";
+      var telegramUrl = "https://api.telegram.org/bot" + telegramToken + "/sendMessage";
 
-    UrlFetchApp.fetch(url, {
-      method: "post",
-      contentType: "application/json",
-      payload: JSON.stringify({
-        chat_id: chatId,
-        text: message
-      })
-    });
+      var options = {
+        method: "post",
+        contentType: "application/json",
+        payload: JSON.stringify({
+          chat_id: chatId,
+          text: message
+        }),
+        muteHttpExceptions: true
+      };
 
-    return ContentService.createTextOutput(
-      JSON.stringify({ status: "success" })
-    ).setMimeType(ContentService.MimeType.JSON);
+      var tgResponse = UrlFetchApp.fetch(telegramUrl, options);
+      telegramStatus = tgResponse.getContentText();
 
-  } catch (err) {
-    return ContentService.createTextOutput(
-      JSON.stringify({ status: "error", message: err.toString() })
-    ).setMimeType(ContentService.MimeType.JSON);
+    } catch (tgError) {
+      telegramStatus = "Telegram failed: " + tgError.toString();
+    }
+
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        status: "success",
+        message: "Order saved successfully.",
+        telegram: telegramStatus
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        status: "error",
+        message: error.toString()
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
   }
 }
