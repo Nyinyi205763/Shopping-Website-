@@ -87,20 +87,16 @@ const products = [
 
 /* =========================
    Google Apps Script URL
-   - Deploy ပြီးရလာတဲ့ Web App URL ကို ဒီမှာထည့်
    ========================= */
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwJ8JThUfKcKGxuRtmDaGEqSvsKvgYxT4RpRiYYFv5egFnaDAoTAtSfVVo5yXe06SxS/exec";
 
 /* =========================
    Cart Data
-   - localStorage ထဲက cart ကိုပြန်ဖတ်
-   - မရှိသေးရင် empty array နဲ့စ
    ========================= */
 let cart = JSON.parse(localStorage.getItem("nikeCart")) || [];
 
 /* =========================
    DOM Elements
-   - HTML ထဲက element တွေကို JS မှာခေါ်သုံးဖို့
    ========================= */
 const productsGrid = document.getElementById("products-grid");
 const cartCount = document.getElementById("cart-count");
@@ -122,7 +118,6 @@ const submitOrderBtn = document.getElementById("submit-order-btn");
 
 /* =========================
    Product Card တွေ render လုပ်မယ်
-   - products array ထဲက data ကို HTML card အဖြစ်ထုတ်
    ========================= */
 function renderProducts() {
   productsGrid.innerHTML = "";
@@ -152,7 +147,6 @@ function renderProducts() {
 
 /* =========================
    Cart ကို browser မှာမှတ်ထားမယ်
-   - refresh လုပ်လည်း cart မပျောက်အောင်
    ========================= */
 function saveCart() {
   localStorage.setItem("nikeCart", JSON.stringify(cart));
@@ -160,7 +154,6 @@ function saveCart() {
 
 /* =========================
    Cart Count update
-   - navbar ထဲ cart item အရေအတွက် update
    ========================= */
 function updateCartCount() {
   const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
@@ -169,8 +162,6 @@ function updateCartCount() {
 
 /* =========================
    Add to Cart
-   - ရှိပြီးသား item ဆို qty +1
-   - မရှိသေးရင် cart ထဲအသစ်ထည့်
    ========================= */
 function addToCart(productId) {
   const existingItem = cart.find(item => item.id === productId);
@@ -190,7 +181,7 @@ function addToCart(productId) {
   saveCart();
   updateCartCount();
   renderCart();
-  openCart(); /* add လုပ်ပြီးတာနဲ့ cart drawer ဖွင့်ပြ */
+  openCart();
 }
 
 /* =========================
@@ -205,8 +196,6 @@ function removeItem(productId) {
 
 /* =========================
    Quantity ပြောင်းမယ်
-   - plus/minus ခလုတ်နဲ့ qty တိုး/လျှော့
-   - 0 အောက်ရောက်ရင် item ဖျက်
    ========================= */
 function changeQty(productId, change) {
   const item = cart.find(item => item.id === productId);
@@ -225,8 +214,7 @@ function changeQty(productId, change) {
 }
 
 /* =========================
-   Cart Drawer ထဲက item list render
-   - subtotal, total တွေတွက်ပြ
+   Cart Drawer render
    ========================= */
 function renderCart() {
   if (cart.length === 0) {
@@ -275,7 +263,7 @@ function closeCart() {
 
 /* =========================
    Checkout Form ဖွင့်မယ်
-   - cart ထဲက summary ကို auto ဖြည့်ပေးမယ်
+   - cart summary auto ဖြည့်
    ========================= */
 function openCheckout() {
   if (cart.length === 0) {
@@ -292,16 +280,34 @@ function openCheckout() {
   orderedItemsField.value = summary;
   totalPriceField.value = `$${total}`;
 
-  /* ✅ cart drawer ကိုအရင်ပိတ် */
+  /* cart drawer ကိုအရင်ပိတ် */
   cartDrawer.classList.remove("show");
   cartOverlay.classList.remove("show");
 
   checkoutModal.classList.add("show");
   document.body.classList.add("modal-open");
 }
+
+/* checkout modal ပိတ် */
+function closeCheckout() {
+  checkoutModal.classList.remove("show");
+  document.body.classList.remove("modal-open");
+}
+
+/* success modal ပြ */
+function showSuccess() {
+  successModal.classList.add("show");
+  document.body.classList.add("modal-open");
+}
+
+/* success modal ပိတ် */
+function closeSuccess() {
+  successModal.classList.remove("show");
+  document.body.classList.remove("modal-open");
+}
+
 /* =========================
    Cart Clear
-   - order submit အောင်မြင်ပြီးရင် cart ရှင်း
    ========================= */
 function clearCart() {
   cart = [];
@@ -311,8 +317,7 @@ function clearCart() {
 }
 
 /* =========================
-   Click Event
-   - Add to Cart button တွေအားလုံးကို event delegation နဲ့ဖမ်း
+   Add to Cart button event
    ========================= */
 document.addEventListener("click", function(e) {
   if (e.target.classList.contains("add-btn")) {
@@ -336,10 +341,35 @@ successOkBtn.addEventListener("click", () => {
   closeCart();
 });
 
+/* modal နောက်ခံကိုနှိပ်ရင် checkout modal ပိတ် */
+checkoutModal.addEventListener("click", (e) => {
+  if (e.target === checkoutModal) {
+    closeCheckout();
+  }
+});
+
+/* success modal နောက်ခံကိုနှိပ်ရင်ပိတ် */
+successModal.addEventListener("click", (e) => {
+  if (e.target === successModal) {
+    closeSuccess();
+  }
+});
+
+/* ESC နှိပ်ရင် modal ပိတ် */
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    if (successModal.classList.contains("show")) {
+      closeSuccess();
+    }
+    if (checkoutModal.classList.contains("show")) {
+      closeCheckout();
+    }
+  }
+});
+
 /* =========================
    Order Submit
    - form data ကို Google Apps Script ဆီပို့
-   - Apps Script က Google Sheet + Telegram ကိုပို့မယ်
    ========================= */
 orderForm.addEventListener("submit", async function(e) {
   e.preventDefault();
@@ -373,11 +403,12 @@ orderForm.addEventListener("submit", async function(e) {
 
     if (result.status === "success") {
       orderForm.reset();
+      closeCheckout();
       clearCart();
-    function showSuccess() {
-  successModal.classList.add("show");
-  document.body.classList.add("modal-open");
-}
+      showSuccess();
+    } else {
+      alert("Order submit failed.");
+    }
   } catch (error) {
     alert("Error submitting order. Please try again.");
     console.error(error);
@@ -389,7 +420,6 @@ orderForm.addEventListener("submit", async function(e) {
 
 /* =========================
    Initial Load
-   - page စဖွင့်တာနဲ့ product, cart data render လုပ်
    ========================= */
 renderProducts();
 updateCartCount();
