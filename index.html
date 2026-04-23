@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nike Shoes Showcase</title>
+  <title>Nike Shoes Store</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -20,7 +20,7 @@
       <a href="#products">Products</a>
       <a href="#footer">Contact</a>
     </nav>
-    <button class="cart-btn">
+    <button class="cart-btn" id="open-cart-btn">
       Cart <span id="cart-count">0</span>
     </button>
   </header>
@@ -29,15 +29,14 @@
   <section class="hero" id="hero">
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <p class="hero-tag">NIKE 2026 NEW COLLECTION</p>
+      <p class="hero-tag">NIKE 2026 COLLECTION</p>
       <h1>
-        RUN FASTER.<br />
-        LOOK SHARPER.<br />
+        RUN FASTER.<br>
+        LOOK SHARPER.<br>
         <span>JUST DO IT.</span>
       </h1>
       <p class="hero-sub">
-        Discover Nike’s latest shoe collection with iconic style, comfort,
-        and performance built for everyday movement.
+        Discover Nike’s latest shoe collection with iconic design, comfort and performance.
       </p>
       <div class="hero-actions">
         <a href="#highlights" class="btn btn-primary">Shop Highlights</a>
@@ -46,74 +45,68 @@
     </div>
   </section>
 
-  <!-- HIGHLIGHT SECTION -->
+  <!-- HIGHLIGHTS -->
   <section class="highlights-section" id="highlights">
     <div class="section-heading">
       <p class="section-tag">FEATURED PICKS</p>
       <h2>Top 3 Highlight Shoes</h2>
-      <p class="section-sub">
-        Hand-picked Nike favorites for lifestyle, running, and performance.
-      </p>
+      <p class="section-sub">Three headline products to showcase on the website.</p>
     </div>
 
     <div class="highlight-grid">
       <div class="highlight-card">
         <div class="highlight-badge">BESTSELLER</div>
-        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80" alt="Nike Air Max Red">
+        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80" alt="Nike Air Max Pulse">
         <div class="highlight-info">
           <h3>Nike Air Max Pulse</h3>
-          <p>Bold cushioning, street-ready style, and all-day comfort.</p>
+          <p>Bold cushioning, strong identity and all-day comfort.</p>
           <div class="price-row">
             <span>$180</span>
-            <button class="add-btn" data-name="Nike Air Max Pulse" data-price="180">Add to Cart</button>
+            <button class="add-btn" data-id="1">Add to Cart</button>
           </div>
         </div>
       </div>
 
       <div class="highlight-card">
         <div class="highlight-badge new">NEW DROP</div>
-        <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=900&q=80" alt="Nike White Shoe">
+        <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=900&q=80" alt="Nike Zoom Fly 5">
         <div class="highlight-info">
           <h3>Nike Zoom Fly 5</h3>
-          <p>Lightweight running power built for speed and smooth transition.</p>
+          <p>Lightweight performance built for speed and modern runners.</p>
           <div class="price-row">
             <span>$200</span>
-            <button class="add-btn" data-name="Nike Zoom Fly 5" data-price="200">Add to Cart</button>
+            <button class="add-btn" data-id="2">Add to Cart</button>
           </div>
         </div>
       </div>
 
       <div class="highlight-card">
         <div class="highlight-badge limited">LIMITED</div>
-        <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=900&q=80" alt="Nike Black Shoe">
+        <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=900&q=80" alt="Nike Metcon X">
         <div class="highlight-info">
           <h3>Nike Metcon X</h3>
-          <p>Training shoe engineered for strength, balance, and explosive moves.</p>
+          <p>Training power with stability, grip and explosive control.</p>
           <div class="price-row">
             <span>$170</span>
-            <button class="add-btn" data-name="Nike Metcon X" data-price="170">Add to Cart</button>
+            <button class="add-btn" data-id="3">Add to Cart</button>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PRODUCT SECTION -->
+  <!-- PRODUCTS -->
   <section class="products-section" id="products">
     <div class="section-heading">
       <p class="section-tag">FULL COLLECTION</p>
       <h2>10 Nike Produced Items</h2>
-      <p class="section-sub">
-        Explore the complete product lineup below.
-      </p>
+      <p class="section-sub">Explore the complete lineup below.</p>
     </div>
 
-    <div class="products-grid" id="products-grid">
-      <!-- JS will inject products here -->
-    </div>
+    <div class="products-grid" id="products-grid"></div>
   </section>
 
-  <!-- PROMO BANNER -->
+  <!-- PROMO -->
   <section class="promo-banner">
     <div class="promo-text">
       <h2>UNLOCK YOUR NEXT LEVEL</h2>
@@ -124,9 +117,89 @@
   <!-- FOOTER -->
   <footer class="footer" id="footer">
     <h3>NIKE</h3>
-    <p>Practice Website Design for Learning HTML, CSS & JavaScript</p>
-    <p class="footer-copy">© 2026 Nike Style Practice Project</p>
+    <p>Practice Website with Cart + Order System</p>
+    <p class="footer-copy">© 2026 Nike Practice Project</p>
   </footer>
+
+  <!-- CART OVERLAY -->
+  <div class="overlay" id="cart-overlay"></div>
+
+  <!-- CART DRAWER -->
+  <aside class="cart-drawer" id="cart-drawer">
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <button id="close-cart-btn" class="close-btn">✕</button>
+    </div>
+
+    <div class="cart-items" id="cart-items">
+      <p class="empty-text">Your cart is empty.</p>
+    </div>
+
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total</span>
+        <strong id="cart-total">$0</strong>
+      </div>
+      <button class="btn btn-primary full-btn" id="checkout-btn">Proceed to Checkout</button>
+    </div>
+  </aside>
+
+  <!-- CHECKOUT MODAL -->
+  <div class="modal-overlay" id="checkout-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Checkout Form</h3>
+        <button id="close-checkout-btn" class="close-btn">✕</button>
+      </div>
+
+      <form id="order-form">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="text" id="phone" name="phone" required>
+        </div>
+
+        <div class="form-group">
+          <label for="location">Location / Address</label>
+          <textarea id="location" name="location" rows="3" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="ordered-items">Ordered Items</label>
+          <textarea id="ordered-items" name="orderedItems" rows="5" readonly></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="total-price">Total Price</label>
+          <input type="text" id="total-price" name="totalPrice" readonly>
+        </div>
+
+        <button type="submit" class="btn btn-primary full-btn" id="submit-order-btn">Submit Order</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- SUCCESS MODAL -->
+  <div class="modal-overlay" id="success-modal">
+    <div class="success-box">
+      <div class="success-icon">✓</div>
+      <h3>Order Received Successfully</h3>
+      <p>
+        Thank you for your order. Order confirmation ပြုလုပ်ရန်
+        မကြာမီ ဖုန်းဖြင့် ပြန်လည်ဆက်သွယ်ပါမည်။
+      </p>
+      <button class="btn btn-primary" id="success-ok-btn">OK</button>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
