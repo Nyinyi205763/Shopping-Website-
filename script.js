@@ -291,24 +291,14 @@ function openCheckout() {
 
   orderedItemsField.value = summary;
   totalPriceField.value = `$${total}`;
+
+  /* ✅ cart drawer ကိုအရင်ပိတ် */
+  cartDrawer.classList.remove("show");
+  cartOverlay.classList.remove("show");
+
   checkoutModal.classList.add("show");
+  document.body.classList.add("modal-open");
 }
-
-/* checkout modal ပိတ် */
-function closeCheckout() {
-  checkoutModal.classList.remove("show");
-}
-
-/* success modal ပြ */
-function showSuccess() {
-  successModal.classList.add("show");
-}
-
-/* success modal ပိတ် */
-function closeSuccess() {
-  successModal.classList.remove("show");
-}
-
 /* =========================
    Cart Clear
    - order submit အောင်မြင်ပြီးရင် cart ရှင်း
@@ -384,10 +374,10 @@ orderForm.addEventListener("submit", async function(e) {
     if (result.status === "success") {
       orderForm.reset();
       clearCart();
-      showSuccess();
-    } else {
-      alert("Order submit failed.");
-    }
+    function showSuccess() {
+  successModal.classList.add("show");
+  document.body.classList.add("modal-open");
+}
   } catch (error) {
     alert("Error submitting order. Please try again.");
     console.error(error);
